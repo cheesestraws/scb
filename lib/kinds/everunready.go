@@ -10,7 +10,7 @@ import (
 var Everunready = "everunready"
 
 func fetchEverunready(ctx context.Context, device string, user string, pass string, reserved interface{}) (io.Reader, error) {
-	return errors.New("fail")
+	return nil, errors.New("fail")
 }
 
 func init() {
