@@ -23,6 +23,7 @@ func fetch() error {
 	}
 
 	io.Copy(os.Stdout, r)
+	r.Close()
 	fmt.Printf("\n")
 
 	return nil
