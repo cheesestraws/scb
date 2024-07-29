@@ -10,14 +10,13 @@ import (
 	"github.com/cheesestraws/scb/lib/kinds"
 )
 
-func download() error {
-	args := os.Args
-	if len(args) < 5 {
+func download(args []string) error {
+	if len(args) < 4 {
 		return ErrTooFewParameters
 	}
 
 	ctx := context.Background()
-	return downloadOne(ctx, os.Args[1], os.Args[2], os.Args[3], os.Args[4])
+	return downloadOne(ctx, args[0], args[1], args[2], args[3])
 }
 
 func downloadOne(ctx context.Context, kind string, device string, user string, pass string) error {

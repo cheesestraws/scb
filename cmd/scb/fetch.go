@@ -9,15 +9,14 @@ import (
 	"github.com/cheesestraws/scb/lib/kinds"
 )
 
-func fetch() error {
-	args := os.Args
-	if len(args) < 5 {
+func fetch(args []string) error {
+	if len(args) < 4 {
 		return ErrTooFewParameters
 	}
 
 	ctx := context.Background()
 
-	r, e := kinds.Fetch(ctx, os.Args[1], os.Args[2], os.Args[3], os.Args[4], nil)
+	r, e := kinds.Fetch(ctx, args[0], args[1], args[2], args[3], nil)
 	if e != nil {
 		return e
 	}
