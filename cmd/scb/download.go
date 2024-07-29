@@ -82,15 +82,25 @@ func downloadAll(args []string) error {
 			return err
 		}
 	}
+	
+	resfn := fmt.Sprintf("results-scb-%s.out", time.Now().Format("200601021504"))
+	res, e := os.Create(resfn)
+	if e != nil {
+		return e
+	}
+	defer res.Close()
 
 	ctx := context.Background()
 
 	for k, v := range m {
 		err := downloadOne(ctx, v.Kind, k, v.User, v.Password)
 		if err != nil {
-			fmt.Printf("%+v\n", err)
+			fmt.Printf("%s: %+v\n", k, err)
+			fmt.Fprintf(res, "%s: %+v\n", k, err)
 		}
 	}
+	
+	fmt.Fprintf(res, "ok\n")
 
 	return nil
 }
