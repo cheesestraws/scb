@@ -29,6 +29,7 @@ func fetchRouterOS(ctx context.Context, device string, user string, pass string,
 		if err != nil {
 		return nil, err
 	}
+
 	err = e.Send(user + "+cet\n") // +cet = dumb terminal, no colours, don't probe terminal
 	if err != nil {
 		return nil, err
