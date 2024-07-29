@@ -17,13 +17,20 @@ func download(args []string) error {
 		return ErrTooFewParameters
 	}
 
+	if *into != "." {
+		err := os.Chdir(*into)
+		if err != nil {
+			return err
+		}
+	}
+
 	ctx := context.Background()
 	return downloadOne(ctx, args[0], args[1], args[2], args[3])
 }
 
 type device struct {
-	Kind string
-	User string
+	Kind     string
+	User     string
 	Password string
 }
 
@@ -31,14 +38,14 @@ func checkToml(args []string) error {
 	if len(args) < 1 {
 		return ErrTooFewParameters
 	}
-	
+
 	f, e := os.Open(args[0])
 	if e != nil {
 		fmt.Printf("%+v", e)
 		os.Exit(1)
 		return e
 	}
-	
+
 	m := make(map[string]device)
 	d := toml.NewDecoder(f)
 	e = d.Decode(&m)
@@ -56,24 +63,31 @@ func downloadAll(args []string) error {
 	if len(args) < 1 {
 		return ErrTooFewParameters
 	}
-	
+
 	f, e := os.Open(args[0])
 	if e != nil {
 		return e
 	}
-	
+
 	m := make(map[string]device)
 	d := toml.NewDecoder(f)
 	e = d.Decode(&m)
 	if e != nil {
 		return e
 	}
-	
+
+	if *into != "." {
+		err := os.Chdir(*into)
+		if err != nil {
+			return err
+		}
+	}
+
 	ctx := context.Background()
 
 	for k, v := range m {
 		err := downloadOne(ctx, v.Kind, k, v.User, v.Password)
-		if err != nil{
+		if err != nil {
 			fmt.Printf("%+v\n", err)
 		}
 	}

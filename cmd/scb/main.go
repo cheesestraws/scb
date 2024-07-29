@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"flag"
+	"fmt"
 )
 
 var args []string
@@ -12,17 +11,11 @@ func usage() {
 	fmt.Printf("(help message goes here)\n")
 }
 
+var into *string
+
 func main() {
-	into := flag.String("into", ".", "put files in this dir")
+	into = flag.String("into", ".", "put files in this dir")
 	flag.Parse()
-	
-	if *into != "." {
-		err := os.Chdir(*into)
-		if err != nil {
-			fmt.Printf("error: %v\n\n", err)
-			return
-		}
-	}
 
 	var sc string
 	var err error

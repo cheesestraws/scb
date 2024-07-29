@@ -8,10 +8,10 @@ var ErrTooFewParameters = errors.New("too few parameters")
 var ErrBadSubcommand = errors.New("bad subcommand")
 
 var subcommands = map[string]func([]string) error{
-	"fetch": fetch,
-	"download": download,
+	"fetch":        fetch,
+	"download":     download,
 	"download-all": downloadAll,
-	"check-toml": checkToml,
+	"check-toml":   checkToml,
 }
 
 func extractSubcommand(args []string) (string, []string, error) {
