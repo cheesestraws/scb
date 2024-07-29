@@ -7,6 +7,7 @@ var ErrBadSubcommand = errors.New("bad subcommand")
 
 var subcommands = map[string]func() error{
 	"fetch": fetch,
+	"download": download,
 }
 
 func extractSubcommand(args []string) (string, []string, error) {
