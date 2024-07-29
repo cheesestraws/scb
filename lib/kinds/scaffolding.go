@@ -4,6 +4,10 @@ import (
 	"context"
 	"errors"
 	"io"
+	"time"
+
+	expect "github.com/google/goexpect"
+	"github.com/ziutek/telnet"
 )
 
 var ErrNoSuchKind = errors.New("no such kind of device")
@@ -21,4 +25,26 @@ func Fetch(ctx context.Context, kind string, device string, user string,
 	}
 
 	return f(ctx, device, user, pass, reserved)
+}
+
+func telnetSpawn(addr string, timeout time.Duration, opts ...expect.Option) (expect.Expecter, <-chan error, error) {
+	conn, err := telnet.Dial("tcp", addr)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	resCh := make(chan error)
+
+	return expect.SpawnGeneric(&expect.GenOptions{
+		In:  conn,
+		Out: conn,
+		Wait: func() error {
+			return <-resCh
+		},
+		Close: func() error {
+			close(resCh)
+			return conn.Close()
+		},
+		Check: func() bool { return true },
+	}, timeout, opts...)
 }
