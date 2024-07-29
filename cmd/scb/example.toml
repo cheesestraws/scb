@@ -1,0 +1,9 @@
+["x460.sw.lan"]
+kind="xos"
+user="admin"
+password="fart"
+
+["device2.srv.lan"]
+kind="routeros"
+user="backup"
+password="honk"
