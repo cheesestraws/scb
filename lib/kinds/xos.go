@@ -23,16 +23,47 @@ func fetchXOS(ctx context.Context, device string, user string, pass string, rese
 	}
 	defer e.Close()
 
-	e.Expect(xosUserPrompt, xosTimeout)
-	e.Send(user + "\n")
-	e.Expect(xosPasswordPrompt, xosTimeout)
-	e.Send(pass + "\n")
-	e.Expect(xosPrompt, xosTimeout)
-	e.Send("disable clipaging\n")
-	e.Expect(xosPrompt, xosTimeout)
-	e.Send("show configuration\n")
+	_, _, err = e.Expect(xosUserPrompt, xosTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send(user + "\n")
+	if err != nil {
+		return nil, err
+	}
 
-	config, _, _ := e.Expect(xosPrompt, xosTimeout)
+	_, _, err = e.Expect(xosPasswordPrompt, xosTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send(pass + "\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(xosPrompt, xosTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("disable clipaging\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(xosPrompt, xosTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("show configuration\n")
+	if err != nil {
+		return nil, err
+	}
+
+	config, _, err := e.Expect(xosPrompt, xosTimeout)
+	if err != nil {
+		return nil, err
+	}
+
 	
 	// Get rid of wandering CRs
 	config = strings.Replace(config, "\r", "", -1)

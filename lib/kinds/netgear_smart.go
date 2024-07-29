@@ -31,23 +31,56 @@ func fetchNetgearSmart(ctx context.Context, device string, _ string, pass string
 	}
 	defer e.Close()
 
-	e.Expect(netgearSmartUserPrompt, netgearSmartTimeout)
-	e.Send("admin\n")
-	e.Expect(netgearSmartPasswordPrompt, netgearSmartTimeout)
-	e.Send(pass)
-	e.Send("\n")
-	e.Expect(netgearSmartUnprivilegedPrompt, netgearSmartTimeout)
-	e.Send("enable\n")
-	e.Expect(netgearSmartPasswordPrompt, netgearSmartTimeout)
-	e.Send("\n")
-	e.Expect(netgearSmartPrivilegedPrompt, netgearSmartTimeout)
-	e.Send("show running-config\n")
+	_, _, err = e.Expect(netgearSmartUserPrompt, netgearSmartTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("admin\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(netgearSmartPasswordPrompt, netgearSmartTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send(pass + "\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(netgearSmartUnprivilegedPrompt, netgearSmartTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("enable\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(netgearSmartPasswordPrompt, netgearSmartTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(netgearSmartPrivilegedPrompt, netgearSmartTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("show running-config\n")
+	if err != nil {
+		return nil, err
+	}
 
 	var config string
 	i := 1
 	for i == 1 {
 		var result string
-		result, _, i, _ = e.ExpectSwitchCase(
+		result, _, i, err = e.ExpectSwitchCase(
 			[]expect.Caser{
 				&expect.Case{
 					R: netgearSmartPrivilegedPrompt,
@@ -57,6 +90,9 @@ func fetchNetgearSmart(ctx context.Context, device string, _ string, pass string
 				},
 			},
 			netgearSmartTimeout)
+		if err != nil {
+			return nil, err
+		}
 		config += result
 		e.Send(" ")
 	}

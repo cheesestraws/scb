@@ -25,14 +25,37 @@ func fetchRouterOS(ctx context.Context, device string, user string, pass string,
 	}
 	defer e.Close()
 	
-	e.Expect(rosUserPrompt, rosTimeout)
-	e.Send(user + "+cet\n") // +cet = dumb terminal, no colours, don't probe terminal
-	e.Expect(rosPasswordPrompt, rosTimeout)
-	e.Send(pass + "\n")
-	e.Expect(rosPrompt, rosTimeout)
-	e.Send("/export\r\n")
+	_, _, err = e.Expect(rosUserPrompt, rosTimeout)
+		if err != nil {
+		return nil, err
+	}
+	err = e.Send(user + "+cet\n") // +cet = dumb terminal, no colours, don't probe terminal
+	if err != nil {
+		return nil, err
+	}
 
-	config, _, _ := e.Expect(rosPrompt, rosTimeout)
+	_, _, err = e.Expect(rosPasswordPrompt, rosTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send(pass + "\n")
+	if err != nil {
+		return nil, err
+	}
+
+	_, _, err = e.Expect(rosPrompt, rosTimeout)
+	if err != nil {
+		return nil, err
+	}
+	err = e.Send("/export\r\n")
+	if err != nil {
+		return nil, err
+	}
+
+	config, _, err := e.Expect(rosPrompt, rosTimeout)
+	if err != nil {
+		return nil, err
+	}
 
 	// Get rid of wandering CRs
 	config = strings.Replace(config, "\r", "", -1)
