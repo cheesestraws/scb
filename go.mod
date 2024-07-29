@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/cheesestraws/telnet v0.0.0-20240729232452-b23dac772057 // indirect
+	github.com/cheesestraws/telnet v0.0.0-20240729233927-d2948d9e2b52 // indirect
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/google/goterm v0.0.0-20190703233501-fc88cf888a3f // indirect
 	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de // indirect
