@@ -1,8 +1,8 @@
 package telnetutils
 
 import (
-	"strings"
 	"os/exec"
+	"strings"
 )
 
 // Which() returns the path to telnet or gtelnet.  Panics if no telnet
@@ -16,6 +16,6 @@ func Which() string {
 			return strings.TrimSpace(string(out))
 		}
 	}
-	
+
 	panic("no telnet installed")
 }
