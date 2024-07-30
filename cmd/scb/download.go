@@ -116,7 +116,7 @@ func downloadOne(ctx context.Context, kind string, device string, user string, p
 	
 	if mkdir {
 		os.Mkdir(device, 0755)
-		fn = device+"/"+fn
+		fn = fmt.Sprintf("%s/%s.conf", device, time.Now().Format("200601021504"))
 	}
 
 	f, e := os.Create(fn)
