@@ -12,6 +12,9 @@ require (
 	github.com/cheesestraws/telnet v0.0.0-20240729233927-d2948d9e2b52 // indirect
 	github.com/golang/protobuf v1.3.3 // indirect
 	github.com/google/goterm v0.0.0-20190703233501-fc88cf888a3f // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/jlaffaye/ftp v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de // indirect
 	golang.org/x/sys v0.0.0-20190412213103-97732733099d // indirect
 	google.golang.org/genproto v0.0.0-20190819201941-24fa4b261c55 // indirect

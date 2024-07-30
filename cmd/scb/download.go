@@ -82,7 +82,7 @@ func downloadAll(args []string) error {
 			return err
 		}
 	}
-	
+
 	os.Mkdir("log", 0755)
 	resfn := fmt.Sprintf("log/results-scb-%s.out", time.Now().Format("200601021504"))
 	res, e := os.Create(resfn)
@@ -100,7 +100,7 @@ func downloadAll(args []string) error {
 			fmt.Fprintf(res, "%s: %+v\n", k, err)
 		}
 	}
-	
+
 	fmt.Fprintf(res, "ok\n")
 
 	return nil
@@ -113,7 +113,7 @@ func downloadOne(ctx context.Context, kind string, device string, user string, p
 	}
 
 	fn := fmt.Sprintf("%s-%s-%s.conf", device, kind, time.Now().Format("200601021504"))
-	
+
 	if mkdir {
 		os.Mkdir(device, 0755)
 		fn = fmt.Sprintf("%s/%s.conf", device, time.Now().Format("200601021504"))

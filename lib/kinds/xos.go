@@ -64,7 +64,6 @@ func fetchXOS(ctx context.Context, device string, user string, pass string, rese
 		return nil, err
 	}
 
-	
 	// Get rid of wandering CRs
 	config = strings.Replace(config, "\r", "", -1)
 	config = strings.TrimPrefix(config, "show configuration\n")

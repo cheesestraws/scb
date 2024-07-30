@@ -6,8 +6,8 @@ import (
 	"io"
 	"time"
 
-	expect "github.com/google/goexpect"
 	"github.com/cheesestraws/telnet"
+	expect "github.com/google/goexpect"
 )
 
 var ErrNoSuchKind = errors.New("no such kind of device")

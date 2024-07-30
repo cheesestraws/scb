@@ -17,16 +17,15 @@ var rosPasswordPrompt = regexp.MustCompile(regexp.QuoteMeta("Password:"))
 var rosPrompt = regexp.MustCompile(`(?U)\[\w+@\S+(\s+\S+)*\]\s?>\s+$`)
 var rosFirstLine = regexp.MustCompile("^[^\n]*\\n")
 
-
 func fetchRouterOS(ctx context.Context, device string, user string, pass string, reserved interface{}) (io.ReadCloser, error) {
 	e, _, err := telnetSpawn(device+":23", -1)
 	if err != nil {
 		return nil, err
 	}
 	defer e.Close()
-	
+
 	_, _, err = e.Expect(rosUserPrompt, rosTimeout)
-		if err != nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -62,7 +61,6 @@ func fetchRouterOS(ctx context.Context, device string, user string, pass string,
 	config = strings.Replace(config, "\r", "", -1)
 	config = rosFirstLine.ReplaceAllString(config, "")
 	config = rosPrompt.ReplaceAllString(config, "")
-
 
 	return io.NopCloser(strings.NewReader(config)), nil
 }
