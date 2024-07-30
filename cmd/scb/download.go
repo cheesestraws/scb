@@ -25,7 +25,7 @@ func download(args []string) error {
 	}
 
 	ctx := context.Background()
-	return downloadOne(ctx, args[0], args[1], args[2], args[3])
+	return downloadOne(ctx, args[0], args[1], args[2], args[3], false)
 }
 
 type device struct {
@@ -83,7 +83,8 @@ func downloadAll(args []string) error {
 		}
 	}
 	
-	resfn := fmt.Sprintf("results-scb-%s.out", time.Now().Format("200601021504"))
+	os.Mkdir("log", 0755)
+	resfn := fmt.Sprintf("log/results-scb-%s.out", time.Now().Format("200601021504"))
 	res, e := os.Create(resfn)
 	if e != nil {
 		return e
@@ -93,7 +94,7 @@ func downloadAll(args []string) error {
 	ctx := context.Background()
 
 	for k, v := range m {
-		err := downloadOne(ctx, v.Kind, k, v.User, v.Password)
+		err := downloadOne(ctx, v.Kind, k, v.User, v.Password, true)
 		if err != nil {
 			fmt.Printf("%s: %+v\n", k, err)
 			fmt.Fprintf(res, "%s: %+v\n", k, err)
@@ -105,13 +106,19 @@ func downloadAll(args []string) error {
 	return nil
 }
 
-func downloadOne(ctx context.Context, kind string, device string, user string, pass string) error {
+func downloadOne(ctx context.Context, kind string, device string, user string, pass string, mkdir bool) error {
 	r, e := kinds.Fetch(ctx, kind, device, user, pass, nil)
 	if e != nil {
 		return e
 	}
 
 	fn := fmt.Sprintf("%s-%s-%s.conf", device, kind, time.Now().Format("200601021504"))
+	
+	if mkdir {
+		os.Mkdir(device, 0755)
+		fn = device+"/"+fn
+	}
+
 	f, e := os.Create(fn)
 	if e != nil {
 		return e
