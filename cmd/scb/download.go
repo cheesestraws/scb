@@ -10,6 +10,7 @@ import (
 	toml "github.com/pelletier/go-toml/v2"
 
 	"github.com/cheesestraws/scb/lib/kinds"
+	"github.com/cheesestraws/scb/lib/metadata"
 )
 
 func download(args []string) error {
@@ -107,6 +108,19 @@ func downloadAll(args []string) error {
 }
 
 func downloadOne(ctx context.Context, kind string, device string, user string, pass string, mkdir bool) error {
+	var md metadata.T
+	md.Kind = kind
+	
+	host, err := os.Hostname()
+	if err != nil {
+		md.BackupHost = host
+	}
+	if md.BackupHost == "" {
+		md.BackupHost = "localhost"
+	}
+
+	startTime := time.Now()
+
 	r, e := kinds.Fetch(ctx, kind, device, user, pass, nil)
 	if e != nil {
 		return e
@@ -128,6 +142,10 @@ func downloadOne(ctx context.Context, kind string, device string, user string, p
 	io.Copy(f, r)
 	r.Close()
 	fmt.Fprintf(f, "\n")
+	
+	md.FetchTime = time.Now().Sub(startTime)
+
+	md.WriteFor(fn)
 
 	return nil
 
