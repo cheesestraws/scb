@@ -21,3 +21,16 @@ func (t T) WriteFor(path string) error {
 
 	return json.NewEncoder(f).Encode(t)
 }
+
+func ReadFor(path string) (*T, error) {
+	f, err := os.Open(path + ".scbmeta")
+	if os.IsNotExist(err) {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+	
+	var t T
+	err = json.NewDecoder(f).Decode(&t)
+	return &t, err
+}
