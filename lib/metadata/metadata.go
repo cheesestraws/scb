@@ -7,8 +7,8 @@ import (
 )
 
 type T struct {
-	BackupHost string `json:"backup_host"`
-	Kind       string `json:"kind"`
+	BackupHost string        `json:"backup_host"`
+	Kind       string        `json:"kind"`
 	FetchTime  time.Duration `json:"fetch_duration"`
 }
 
@@ -29,7 +29,7 @@ func ReadFor(path string) (*T, error) {
 	} else if err != nil {
 		return nil, err
 	}
-	
+
 	var t T
 	err = json.NewDecoder(f).Decode(&t)
 	return &t, err

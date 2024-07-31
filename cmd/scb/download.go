@@ -110,7 +110,7 @@ func downloadAll(args []string) error {
 func downloadOne(ctx context.Context, kind string, device string, user string, pass string, mkdir bool) error {
 	var md metadata.T
 	md.Kind = kind
-	
+
 	host, err := os.Hostname()
 	if err != nil {
 		md.BackupHost = host
@@ -142,7 +142,7 @@ func downloadOne(ctx context.Context, kind string, device string, user string, p
 	io.Copy(f, r)
 	r.Close()
 	fmt.Fprintf(f, "\n")
-	
+
 	md.FetchTime = time.Now().Sub(startTime)
 
 	md.WriteFor(fn)
