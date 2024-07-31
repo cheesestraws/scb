@@ -1,6 +1,6 @@
 module github.com/cheesestraws/scb
 
-go 1.22.5
+go 1.22.4
 
 require (
 	github.com/cheesestraws/telnet v0.0.0-20240729233927-d2948d9e2b52
