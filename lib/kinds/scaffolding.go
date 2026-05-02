@@ -6,7 +6,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/cheesestraws/telnet"
+	"github.com/ziutek/telnet"
 	expect "github.com/google/goexpect"
 )
 
